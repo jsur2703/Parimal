@@ -13,7 +13,6 @@ Before running the application, ensure you have the following installed:<br />
 -pip (Python package manager)<br />
 
 # Installation
-Clone the repository (if hosted on a platform like GitHub) <br />
 Install the required Python libraries (bash): pip install streamlit easyocr pillow numpy
 
 # Running the Application
