@@ -1,45 +1,46 @@
 import streamlit as st
+import easyocr
 from PIL import Image
-import pytesseract
-import re
+import numpy as np
 
-# Function to extract text from image
-def extract_text_from_image(image):
-    return pytesseract.image_to_string(image)
+# Set up the page title
+st.title("OCR and Keyword Search (Supports English & Hindi)")
 
-# Function to search and highlight keywords in text
-def highlight_keywords(text, keyword):
-    # Use regex to find the keyword and add highlighting
-    highlighted_text = re.sub(f"({keyword})", r'<mark>\1</mark>', text, flags=re.IGNORECASE)
-    return highlighted_text
+# Initialize EasyOCR reader with Hindi ('hi') and English ('en') support
+reader = easyocr.Reader(['en', 'hi'])
 
-# Streamlit app
-def main():
-    st.title("Image OCR and Keyword Search")
+# File uploader to allow image upload
+uploaded_file = st.file_uploader("Upload an image (supports English & Hindi text)", type=["png", "jpg", "jpeg"])
 
-    # Step 1: Image Upload
-    uploaded_image = st.file_uploader("Upload an image for OCR", type=["png", "jpg", "jpeg"])
+if uploaded_file is not None:
+    # Display the uploaded image
+    image = Image.open(uploaded_file)
+    st.image(image, caption='Uploaded Image', use_column_width=True)
+
+    # Convert the image to a numpy array for OCR processing
+    img_array = np.array(image)
     
-    if uploaded_image:
-        # Display the uploaded image
-        image = Image.open(uploaded_image)
-        st.image(image, caption='Uploaded Image', use_column_width=True)
-        
-        # Step 2: Extract Text from Image
-        extracted_text = extract_text_from_image(image)
-        st.subheader("Extracted Text")
-        st.text(extracted_text)
-        
-        # Step 3: Keyword Search
-        keyword = st.text_input("Enter keyword to search")
-        
-        if keyword:
-            # Search for the keyword and highlight it
-            st.subheader("Search Results")
-            highlighted_text = highlight_keywords(extracted_text, keyword)
-            
-            # Display highlighted results with Streamlit's HTML component
-            st.markdown(f"<div style='white-space: pre-wrap;'>{highlighted_text}</div>", unsafe_allow_html=True)
+    # Perform OCR on the image using EasyOCR
+    with st.spinner("Extracting text..."):
+        result = reader.readtext(img_array)
+    
+    # Extract the text and display it
+    extracted_text = "\n".join([res[1] for res in result])
+    st.subheader("Extracted Text:")
+    st.text_area("OCR Result (English & Hindi)", extracted_text, height=200)
 
-if __name__ == "__main__":
-    main()
+    # Keyword search functionality
+    keyword = st.text_input("Enter a keyword to search in the extracted text:")
+
+    if keyword:
+        # Search for the keyword in the extracted text (case insensitive)
+        search_results = [text for text in extracted_text.split('\n') if keyword.lower() in text.lower()]
+        
+        # Display the matching results
+        if search_results:
+            st.subheader("Search Results:")
+            st.text_area("Matching Sections", "\n".join(search_results), height=200)
+        else:
+            st.warning(f"No matches found for the keyword: {keyword}")
+else:
+    st.info("Please upload an image containing English or Hindi text.")
