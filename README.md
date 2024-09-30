@@ -8,16 +8,15 @@ This is a web-based prototype built using Streamlit and EasyOCR that allows user
 -Web Interface: The application uses Streamlit for an intuitive and simple web interface.<br />
 
 # Prerequisites
-Before running the application, ensure you have the following installed:
+Before running the application, ensure you have the following installed:<br />
 -Python 3.x<br />
 -pip (Python package manager)<br />
 
 # Installation
-Clone the repository (if hosted on a platform like GitHub(bash):
+Clone the repository (if hosted on a platform like GitHub(bash)):
 git clone https://github.com/your-repo/ocr-hindi-english.git
 cd ocr-hindi-english
-Install the required Python libraries (bash):
-pip install streamlit easyocr pillow numpy
+Install the required Python libraries (bash): pip install streamlit easyocr pillow numpy
 
 # Running the Application
 Open a terminal or command prompt in the project directory.<br />
