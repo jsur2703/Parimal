@@ -22,10 +22,16 @@ pip install streamlit easyocr pillow numpy
 # Running the Application
 Open a terminal or command prompt in the project directory.
 Run the following command to start the Streamlit app (bash):
--streamlit run app.py
+streamlit run app.py
 Once the app is running, a web page will automatically open in your browser at http://localhost:8501/. You can upload an image containing English and/or Hindi text and use the keyword search feature.
 
 # How It Works
 Upload an Image: Upload an image file (PNG, JPG, or JPEG) containing text in either English, Hindi, or both.
 Extract Text: The app uses EasyOCR to extract the text from the uploaded image, which is displayed in a text box.
 Keyword Search: Enter a keyword to search for within the extracted text. If the keyword is found, the matching sections will be displayed.
+
+# Dependencies
+Streamlit: Used for building the web interface.
+EasyOCR: For performing Optical Character Recognition (OCR) on the uploaded images.
+Pillow: Used for handling image files.
+NumPy: For image array processing.
