@@ -1,32 +1,31 @@
 # Parimal
-import streamlit as st
-from PIL import Image
-import pytesseract
-import re
+This is a web-based prototype built using Streamlit and EasyOCR that allows users to upload an image containing both English and Hindi text. The application performs Optical Character Recognition (OCR) to extract the text from the image and provides a keyword search functionality within the extracted text.
 
-# Function to extract text from image
-def extract_text_from_image(image):
-    return pytesseract.image_to_string(image)
-# Function to search and highlight keywords in text
-def highlight_keywords(text, keyword):
-    highlighted_text = re.sub(f"({keyword})", r'<mark>\1</mark>', text, flags=re.IGNORECASE)
-    return highlighted_text
+#Features
+-OCR for English and Hindi: Extracts text from an uploaded image in both English and Hindi using EasyOCR.
+-Image Upload: Users can upload images in PNG, JPG, or JPEG formats.
+-Keyword Search: Users can search for keywords within the extracted text, and matching results are highlighted.
+-Web Interface: The application uses Streamlit for an intuitive and simple web interface.
 
-# Streamlit app
-def main():
-    st.title("Image OCR and Keyword Search")
-    uploaded_image = st.file_uploader("Upload an image for OCR", type=["png", "jpg", "jpeg"])
-    if uploaded_image:
-        image = Image.open(uploaded_image)
-        st.image(image, caption='Uploaded Image', use_column_width=True)
-        extracted_text = extract_text_from_image(image)
-        st.subheader("Extracted Text")
-        st.text(extracted_text)
-        keyword = st.text_input("Enter keyword to search")
-        if keyword:
-            st.subheader("Search Results")
-            highlighted_text = highlight_keywords(extracted_text, keyword)
-            st.markdown(f"<div style='white-space: pre-wrap;'>{highlighted_text}</div>", unsafe_allow_html=True)
+# Prerequisites
+Before running the application, ensure you have the following installed:
+-Python 3.x
+-pip (Python package manager)
 
-if __name__ == "__main__":
-    main()
+# Installation
+Clone the repository (if hosted on a platform like GitHub(bash):
+git clone https://github.com/your-repo/ocr-hindi-english.git
+cd ocr-hindi-english
+Install the required Python libraries (bash):
+pip install streamlit easyocr pillow numpy
+
+# Running the Application
+Open a terminal or command prompt in the project directory.
+Run the following command to start the Streamlit app (bash):
+-streamlit run app.py
+Once the app is running, a web page will automatically open in your browser at http://localhost:8501/. You can upload an image containing English and/or Hindi text and use the keyword search feature.
+
+# How It Works
+Upload an Image: Upload an image file (PNG, JPG, or JPEG) containing text in either English, Hindi, or both.
+Extract Text: The app uses EasyOCR to extract the text from the uploaded image, which is displayed in a text box.
+Keyword Search: Enter a keyword to search for within the extracted text. If the keyword is found, the matching sections will be displayed.
