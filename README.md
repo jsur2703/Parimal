@@ -2,10 +2,10 @@
 This is a web-based prototype built using Streamlit and EasyOCR that allows users to upload an image containing both English and Hindi text. The application performs Optical Character Recognition (OCR) to extract the text from the image and provides a keyword search functionality within the extracted text.
 
 # Features
--OCR for English and Hindi: Extracts text from an uploaded image in both English and Hindi using EasyOCR.< br >
--Image Upload: Users can upload images in PNG, JPG, or JPEG formats.< br >
--Keyword Search: Users can search for keywords within the extracted text, and matching results are highlighted.< br >
--Web Interface: The application uses Streamlit for an intuitive and simple web interface.< br >
+-OCR for English and Hindi: Extracts text from an uploaded image in both English and Hindi using EasyOCR.<br />
+-Image Upload: Users can upload images in PNG, JPG, or JPEG formats.<br />
+-Keyword Search: Users can search for keywords within the extracted text, and matching results are highlighted.<br />
+-Web Interface: The application uses Streamlit for an intuitive and simple web interface.<br />
 
 # Prerequisites
 Before running the application, ensure you have the following installed:
