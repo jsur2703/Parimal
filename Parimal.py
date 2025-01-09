@@ -1,46 +1,42 @@
 import streamlit as st
-import easyocr
 from PIL import Image
-import numpy as np
+from transformers import pipeline
 
-# Set up the page title
-st.title("OCR and Keyword Search (Supports English & Hindi)")
 
-# Initialize EasyOCR reader with Hindi ('hi') and English ('en') support
-reader = easyocr.Reader(['en', 'hi'])
+# Load a model known to handle Hindi text well
+'''ocr_model = pipeline("ocr", model="path_to_hindi_supported_model")
+def extract_text(image):
+    results = ocr_model(image)
+    # Process results to extract text
+    extracted_text = "\n".join([result['text'] for result in results])
+    return extracted_text'''
 
-# File uploader to allow image upload
-uploaded_file = st.file_uploader("Upload an image (supports English & Hindi text)", type=["png", "jpg", "jpeg"])
+# Load the OCR model
+ocr_model = pipeline("ocr", model="path_to_GOT_model")
+
+def extract_text(image):
+    results = ocr_model(image)
+    return results
+
+# Streamlit UI
+st.title("OCR and Document Search")
+st.write("Upload an image to extract text and search for keywords.")
+
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png"])
+keyword = st.text_input("Enter keyword to search:")
 
 if uploaded_file is not None:
-    # Display the uploaded image
     image = Image.open(uploaded_file)
     st.image(image, caption='Uploaded Image', use_column_width=True)
-
-    # Convert the image to a numpy array for OCR processing
-    img_array = np.array(image)
     
-    # Perform OCR on the image using EasyOCR
-    with st.spinner("Extracting text..."):
-        result = reader.readtext(img_array)
-    
-    # Extract the text and display it
-    extracted_text = "\n".join([res[1] for res in result])
+    # Perform OCR
+    extracted_text = extract_text(image)
     st.subheader("Extracted Text:")
-    st.text_area("OCR Result (English & Hindi)", extracted_text, height=200)
+    st.write(extracted_text)
 
-    # Keyword search functionality
-    keyword = st.text_input("Enter a keyword to search in the extracted text:")
-
+    # Search functionality
     if keyword:
-        # Search for the keyword in the extracted text (case insensitive)
-        search_results = [text for text in extracted_text.split('\n') if keyword.lower() in text.lower()]
-        
-        # Display the matching results
-        if search_results:
-            st.subheader("Search Results:")
-            st.text_area("Matching Sections", "\n".join(search_results), height=200)
-        else:
-            st.warning(f"No matches found for the keyword: {keyword}")
-else:
-    st.info("Please upload an image containing English or Hindi text.")
+        search_results = [line for line in extracted_text.split('\n') if keyword in line]
+        st.subheader("Search Results:")
+        for result in search_results:
+            st.write(result)
